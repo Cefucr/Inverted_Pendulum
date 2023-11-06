@@ -16,36 +16,54 @@ void setup() {
   Serial.begin(9600);
 }
 
+//this is the value of the potentiometer when it is standing straight
+int midpoint = 570;
+
+//gives the stick some space before it tells the robot to start moving
+int space = 5;
+
+//what speed the motors turn
+int speed = 250;
+
 void loop() {
   //Checks the value of the potentiometer to see how much the stick has tilted
   int tasapaino = analogRead(5);
 
-  if(tasapaino < 560){
+  if(tasapaino < 565){
     //goes forward
-    analogWrite(PWMA,250);
-    digitalWrite(AIN1,HIGH);
-    digitalWrite(AIN2,LOW);
-    analogWrite(PWMB,250);
-    digitalWrite(BIN1,HIGH); 
-    digitalWrite(BIN2,LOW);
-
-  }else if(tasapaino > 580){
+    forward(speed);
+  }else if(tasapaino > 575){
     //goes backwards
-    analogWrite(PWMA,250);
-    digitalWrite(AIN1,LOW);
-    digitalWrite(AIN2,HIGH);
-    analogWrite(PWMB,250);
-    digitalWrite(BIN1,LOW); 
-    digitalWrite(BIN2,HIGH);
-
+    backward(speed);
   }else{
     //stops
-    analogWrite(PWMA,50);
-    digitalWrite(AIN1,LOW);
-    digitalWrite(AIN2,LOW);
-    analogWrite(PWMB,50);
-    digitalWrite(BIN1,LOW); 
-    digitalWrite(BIN2,LOW);
+    stop();
   }
-  Serial.println(tasapaino);
+}
+
+void forward(val){
+  analogWrite(PWMA,val);
+  digitalWrite(AIN1,LOW);
+  digitalWrite(AIN2,HIGH);
+  analogWrite(PWMB,val);
+  digitalWrite(BIN1,LOW); 
+  digitalWrite(BIN2,HIGH);
+}
+
+void backwards(val){
+  analogWrite(PWMA,val);
+  digitalWrite(AIN1,HIGH);
+  digitalWrite(AIN2,LOW);
+  analogWrite(PWMB,val);
+  digitalWrite(BIN1,HIGH); 
+  digitalWrite(BIN2,LOW);
+}
+
+void stop(){
+  analogWrite(PWMA,50);
+  digitalWrite(AIN1,LOW);
+  digitalWrite(AIN2,LOW);
+  analogWrite(PWMB,50);
+  digitalWrite(BIN1,LOW); 
+  digitalWrite(BIN2,LOW);
 }
